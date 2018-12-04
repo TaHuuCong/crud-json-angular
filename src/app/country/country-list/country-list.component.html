@@ -1,10 +1,10 @@
 <div class="row m-0">
   <div class="col-md-8 col-lg-7 mx-auto">
     <h1>Country List</h1>
-    <div class="search d-flex justify-content-center" [formGroup]="myGroup">
+    <div class="search d-flex justify-content-center">
       <mat-form-field class="w-50 search-box">
         <fa class="icon" name="search"></fa>
-        <input type="text" matInput placeholder="Search by name" formControlName="searchField" (input)="onSearchChange(search.value)" #search>
+        <input type="text" matInput placeholder="Search by name" [formControl]="searchField" (input)="onSearchChange(search.value)" #search>
       </mat-form-field>
     </div>
     <div class="filter d-flex">

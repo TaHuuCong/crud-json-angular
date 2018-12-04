@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Country } from '../country/country';
 
 const BASE_URL = 'http://localhost:1234/countries';
@@ -19,6 +19,15 @@ export class CountryService {
 
     getCountryById(id): Observable<Country> {
         return this.http.get<Country>(`${BASE_URL}/${id}`);
+    }
+
+    getCountryByName(name: string) {
+        // return this.http.get<any[]>(`${BASE_URL}?name=${name}`);
+
+        // use HttpParams
+        return this.http.get<any[]>(`${BASE_URL}`, {
+            params: new HttpParams().set('name', name)
+        });
     }
 
     addNewCountry(country: Country): Observable<any> {

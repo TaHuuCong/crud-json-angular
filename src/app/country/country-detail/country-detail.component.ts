@@ -2,23 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CountryService } from '../country.service';
 import { Country } from '../country';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { NotifierService } from 'angular-notifier';
-
-function uniqueNameValidator(control: FormControl) {
-  const name = control.value;
-  // if (email && email.indexOf("@") != -1) {
-  //   let [_, domain] = email.split("@");
-  //   if (domain !== "codecraft.tv") {
-  //     return {
-  //       emailDomain: {
-  //         parsedDomain: domain
-  //       }
-  //     }
-  //   }
-  // }
-  // return null;
-}
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-country-detail',
@@ -40,18 +25,14 @@ export class CountryDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private countryService: CountryService,
     private fb: FormBuilder,
-    private router: Router,
-    private notifierService: NotifierService
-  ) {
-    // countryService.getAllCountries().subscribe(
-    //   (data) => this.countries = data
-    // );
-  }
+    private router: Router
+  ) { }
 
   formInit() {
     this.countryForm = this.fb.group({
       id: [],
-      name: ['', [Validators.required]],
+      // name: ['', [Validators.required]],
+      name: ['', [Validators.required], this.uniqueNameValidator.bind(this)],
       acreage: ['', [Validators.required]],
       population: ['', [Validators.required]],
       continent: ['', [Validators.required]]
@@ -112,7 +93,6 @@ export class CountryDetailComponent implements OnInit {
         data => {
           this.isSuccess = true;
           this.router.navigateByUrl('/country/list');
-          // this.notifierService.notify('success', 'New country has been added!');
         },
       );
     }
@@ -120,6 +100,14 @@ export class CountryDetailComponent implements OnInit {
 
   onReset() {
     this.countryForm.reset();
+  }
+
+  uniqueNameValidator(c: AbstractControl) {
+    return this.countryService.getCountryByName(c.value).pipe(
+      map(countries => {
+        return countries && countries.length > 0 ? { uniqueName: true } : null;
+      })
+    );
   }
 
 }

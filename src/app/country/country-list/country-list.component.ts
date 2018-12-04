@@ -13,7 +13,7 @@ export class CountryListComponent implements OnInit {
   countries: Country[] = [];
   copyCountries: Country[] = [];
   isActive = false;
-  myGroup: FormGroup;
+  searchField: FormControl;
   arr = [0, 0, 0, 0, 0, 0];
 
   constructor(
@@ -28,9 +28,7 @@ export class CountryListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.myGroup = new FormGroup({
-      searchField: new FormControl()
-    });
+    this.searchField = new FormControl();
   }
 
   onCreate() {
@@ -120,7 +118,8 @@ export class CountryListComponent implements OnInit {
       this.countries = this.copyCountries;
     }
     this.countries = this.countries.filter(country => {
-      return country.name.toLowerCase().includes(value.toLowerCase());
+      return country.name.toLowerCase().includes(value.toLowerCase())
+        || country.continent.toLowerCase().includes(value.toLowerCase());
     });
   }
 

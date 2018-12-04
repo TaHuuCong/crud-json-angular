@@ -8,6 +8,7 @@ import { CountryDetailComponent } from './country-detail/country-detail.componen
 import { LibModule } from '../lib.module';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { FilterPipe } from '../pipes/filter.pipe';
+import { UniqueNameValidatorDirective } from '../directives/unique-name-validator.directive';
 
 const customNotifierOptions: NotifierOptions = {
     position: {
@@ -54,7 +55,8 @@ const customNotifierOptions: NotifierOptions = {
     declarations: [
         CountryListComponent,
         CountryDetailComponent,
-        FilterPipe
+        FilterPipe,
+        UniqueNameValidatorDirective
     ],
     imports: [
         RouterModule.forChild(countryRoute),

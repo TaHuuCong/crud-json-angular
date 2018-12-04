@@ -1,5 +1,5 @@
 <div class="country-detail">
-  <div class="row">
+  <div class="row m-0">
     <div class="col-md-8 col-lg-6 mx-auto">
       <notifier-container></notifier-container>
 
@@ -10,23 +10,32 @@
         <h1>Country</h1>
       </div>
 
-      <form [formGroup]="countryForm">
+      <form [formGroup]="countryForm" #myform="ngForm">
         <div class="form-group">
           <mat-form-field class="w-100">
             <input matInput placeholder="Country name" formControlName="name" required [readonly]="operation === 'details'">
+            <mat-error *ngIf="countryForm.get('name').hasError('required') && (countryForm.get('name').touched || myform.submitted)">
+              Country name is required.
+            </mat-error>
+            <mat-error *ngIf="countryForm.get('name').hasError('uniqueName') && (countryForm.get('name').touched || myform.submitted)">
+              Country name already exists.
+            </mat-error>
           </mat-form-field>
-          <!-- <mat-error *ngIf="name.hasError('required')">
-            Name is a required feild.
-          </mat-error> -->
         </div>
         <div class="form-group">
           <mat-form-field class="w-100">
             <input type="number" matInput placeholder="Acreage" formControlName="acreage" required [readonly]="operation === 'details'">
+            <mat-error *ngIf="countryForm.get('acreage').hasError('required') && (countryForm.get('acreage').touched || myform.submitted)">
+              Acreage is required.
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="form-group">
           <mat-form-field class="w-100">
             <input type="number" matInput placeholder="Population" formControlName="population" required [readonly]="operation === 'details'">
+            <mat-error *ngIf="countryForm.get('population').hasError('required') && (countryForm.get('population').touched || myform.submitted)">
+              Population is required.
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="form-group">
@@ -36,6 +45,9 @@
                 {{item}}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="countryForm.get('continent').hasError('required') && (countryForm.get('continent').touched || myform.submitted)">
+              Continent is required.
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="button" *ngIf="operation === 'details'">
