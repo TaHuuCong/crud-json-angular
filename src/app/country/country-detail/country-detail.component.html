@@ -1,0 +1,56 @@
+<div class="country-detail">
+  <div class="row">
+    <div class="col-md-8 col-lg-6 mx-auto">
+      <notifier-container></notifier-container>
+
+      <div class="title d-flex align-items-center justify-content-center">
+        <a (click)="onBack()">
+          <img src="/assets/images/back-icon.png" alt="">
+        </a>
+        <h1>Country</h1>
+      </div>
+
+      <form [formGroup]="countryForm">
+        <div class="form-group">
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Country name" formControlName="name" required [readonly]="operation === 'details'">
+          </mat-form-field>
+          <!-- <mat-error *ngIf="name.hasError('required')">
+            Name is a required feild.
+          </mat-error> -->
+        </div>
+        <div class="form-group">
+          <mat-form-field class="w-100">
+            <input type="number" matInput placeholder="Acreage" formControlName="acreage" required [readonly]="operation === 'details'">
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field class="w-100">
+            <input type="number" matInput placeholder="Population" formControlName="population" required [readonly]="operation === 'details'">
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field class="w-100">
+            <mat-select placeholder="Continent" formControlName="continent" required>
+              <mat-option *ngFor="let item of continents" [value]="item" [disabled]="operation === 'details'">
+                {{item}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="button" *ngIf="operation === 'details'">
+          <button class="edit" mat-raised-button color="warn" (click)="onDelete(country.id)">Delete</button>
+          <button class="edit" mat-raised-button color="primary" (click)="onEdit(country.id)">Edit</button>
+        </div>
+        <div class="button" *ngIf="operation === 'edit'">
+          <!-- <button class="reset" mat-raised-button color="accent" (click)="onReset()">Reset</button> -->
+          <button class="save" mat-raised-button color="accent" (click)="onUpdate()">Save</button>
+        </div>
+        <div class="button" *ngIf="operation === 'create'">
+          <!-- <button class="reset" mat-raised-button color="accent" (click)="onReset()">Reset</button> -->
+          <button class="create" mat-raised-button color="accent" (click)="onCreate()">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

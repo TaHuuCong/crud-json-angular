@@ -1,0 +1,69 @@
+<div class="row m-0">
+  <div class="col-md-8 col-lg-7 mx-auto">
+    <h1>Country List</h1>
+    <div class="search d-flex justify-content-center" [formGroup]="myGroup">
+      <mat-form-field class="w-50 search-box">
+        <fa class="icon" name="search"></fa>
+        <input type="text" matInput placeholder="Search by name" formControlName="searchField" (input)="onSearchChange(search.value)" #search>
+      </mat-form-field>
+    </div>
+    <div class="filter d-flex">
+      <span>Filter by: </span>
+      <div class="filter-btn">
+        <button mat-raised-button (click)="filterBy('all')">All Countries</button>
+        <button mat-raised-button (click)="filterBy('acrgt1')">Acreage &gt; 1M</button>
+        <button mat-raised-button (click)="filterBy('popgt1')">Population &gt; 100M</button>
+        <button mat-raised-button (click)="filterBy('asian')">Asian Countries</button>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column align-items-start mx-auto">
+    <button class="add" mat-raised-button color="primary" (click)="onCreate()">Add New Country</button>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>
+              Country Name
+              <span title="Desc" class="sort desc" (click)="nameDesc()" [ngClass]="{'show': arr[1] === 1}"></span>
+              <span title="Asc" class="sort asc" (click)="nameAsc()" [ngClass]="{'show': arr[0] === 1}"></span>
+            </th>
+            <th>
+              Acreage (km<sup>2</sup>)
+              <span title="Desc" class="sort desc" (click)="acreageDesc()" [ngClass]="{'show': arr[3] === 1}"></span>
+              <span title="Asc" class="sort asc" (click)="acreageAsc()" [ngClass]="{'show': arr[2] === 1}"></span>
+            </th>
+            <th>
+              Population (2018)
+              <span title="Desc" class="sort desc" (click)="populationDesc()" [ngClass]="{'show': arr[5] === 1}"></span>
+              <span title="Asc" class="sort asc" (click)="populationAsc()" [ngClass]="{'show': arr[4] === 1}"></span>
+            </th>
+            <th>Continent</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let country of countries">
+            <td>{{ country.id }}</td>
+            <td>{{ country.name | titlecase }}</td>
+            <td>{{ country.acreage | number }}</td>
+            <td>{{ country.population | number }}</td>
+            <td>{{ country.continent }}</td>
+            <td class="action">
+              <a title="View" class="view" routerLink="/country/{{country.id}}/details">
+                <fa name="eye"></fa>
+              </a>
+              <a title="Edit" class="edit" routerLink="/country/{{country.id}}/edit">
+                <fa name="edit"></fa>
+              </a>
+              <a title="Delete" class="delete" (click)="onDelete(country.id)">
+                <fa name="trash"></fa>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,74 +1,95 @@
 {
-    "countries": [
-        {
-            "id": 1,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }, 
-        {
-            "id": 2,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }, 
-        {
-            "id": 3,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }, 
-        {
-            "id": 4,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }, 
-        {
-            "id": 5,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }, 
-        {
-            "id": 6,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }, 
-        {
-            "id": 7,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }, 
-        {
-            "id": 8,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }, 
-        {
-            "id": 9,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }, 
-        {
-            "id": 10,
-            "name": "Việt Nam",
-            "acreage": 87.67,
-            "population": 100,
-            "continent": "Asia"
-        }
-    ]
+  "countries": [
+    {
+      "id": 1,
+      "name": "Viet Nam",
+      "acreage": 310070,
+      "population": 96491146,
+      "continent": "Asia"
+    },
+    {
+      "id": 2,
+      "name": "United state",
+      "acreage": 9147420,
+      "population": 326766748,
+      "continent": "America"
+    },
+    {
+      "id": 3,
+      "name": "Japan",
+      "acreage": 364555,
+      "population": 127185332,
+      "continent": "Asia"
+    },
+    {
+      "id": 4,
+      "name": "South Africa",
+      "acreage": 1213090,
+      "population": 57398421,
+      "continent": "Africa"
+    },
+    {
+      "id": 5,
+      "name": "United kingdom",
+      "acreage": 241930,
+      "population": 66573504,
+      "continent": "Europe"
+    },
+    {
+      "id": 6,
+      "name": "Australia",
+      "acreage": 7682300,
+      "population": 24772247,
+      "continent": "Australia"
+    },
+    {
+      "id": 7,
+      "name": "Canada",
+      "acreage": 9093510,
+      "population": 36953765,
+      "continent": "America"
+    },
+    {
+      "id": 8,
+      "name": "China",
+      "acreage": 9388211,
+      "population": 1415045928,
+      "continent": "Asia"
+    },
+    {
+      "id": 9,
+      "name": "South Korea",
+      "acreage": 97230,
+      "population": 51164435,
+      "continent": "Asia"
+    },
+    {
+      "id": 10,
+      "name": "Germany",
+      "acreage": 348560,
+      "population": 82293457,
+      "continent": "Europe"
+    },
+    {
+      "name": "Thailand",
+      "acreage": 90000,
+      "population": 70000000,
+      "continent": "Asia",
+      "id": 11
+    },
+    {
+      "name": "Colombia",
+      "acreage": 100500,
+      "population": 65000000,
+      "continent": "America",
+      "id": 12
+    },
+    {
+      "name": "New Zealand",
+      "acreage": 268021,
+      "population": 4947790,
+      "continent": "Australia",
+      "id": 13
+    }
+  ]
 }

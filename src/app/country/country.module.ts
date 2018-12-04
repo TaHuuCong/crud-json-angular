@@ -1,16 +1,66 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { countryRoute } from './country.route';
 import { CountryService } from './country.service';
-import { CountryComponent } from './country.component';
+import { CountryListComponent } from './country-list/country-list.component';
+import { CountryDetailComponent } from './country-detail/country-detail.component';
+
+import { LibModule } from '../lib.module';
+import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { FilterPipe } from '../pipes/filter.pipe';
+
+const customNotifierOptions: NotifierOptions = {
+    position: {
+        horizontal: {
+            position: 'left',
+            distance: 12
+        },
+        vertical: {
+            position: 'top',
+            distance: 12,
+            gap: 10
+        }
+    },
+    theme: 'material',
+    behaviour: {
+        autoHide: 5000,
+        onClick: false,
+        onMouseover: 'pauseAutoHide',
+        showDismissButton: true,
+        stacking: 4
+    },
+    animations: {
+        enabled: true,
+        show: {
+            preset: 'fade',
+            speed: 300,
+            easing: 'ease'
+        },
+        hide: {
+            preset: 'fade',
+            speed: 300,
+            easing: 'ease',
+            offset: 50
+        },
+        shift: {
+            speed: 300,
+            easing: 'ease'
+        },
+        overlap: 150
+    }
+};
 
 @NgModule({
     declarations: [
-        CountryComponent
+        CountryListComponent,
+        CountryDetailComponent,
+        FilterPipe
     ],
-    imports: [RouterModule.forChild(countryRoute)],
-    exports: [RouterModule],
+    imports: [
+        RouterModule.forChild(countryRoute),
+        LibModule,
+        NotifierModule.withConfig(customNotifierOptions),
+    ],
     providers: [
         CountryService,
     ],
