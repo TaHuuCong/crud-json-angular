@@ -15,6 +15,7 @@ export class CountryListComponent implements OnInit {
   isActive = false;
   searchField: FormControl;
   arr = [0, 0, 0, 0, 0, 0];
+  createdDate = new Date('2018-12-18T12:56:50.907Z');
 
   constructor(
     private countryService: CountryService,
