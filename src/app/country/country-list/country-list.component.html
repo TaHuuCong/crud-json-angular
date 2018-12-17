@@ -44,7 +44,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let country of countries">
+          <tr *ngFor="let country of countries" (click)="view(country.id)">
             <td>{{ country.id }}</td>
             <td>{{ country.name | titlecase }}</td>
             <td>{{ country.acreage | number }}</td>

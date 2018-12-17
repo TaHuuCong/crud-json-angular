@@ -123,4 +123,8 @@ export class CountryListComponent implements OnInit {
     });
   }
 
+  view(id) {
+    this.router.navigateByUrl('country/' + id + '/details');
+  }
+
 }

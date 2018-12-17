@@ -6,6 +6,7 @@ import { CountryModule } from './country/country.module';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DatetimePickerModule } from './datetime-picker/datetime-picker.module';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,10 +19,11 @@ const routes: Routes = [
     HomeComponent
   ],
   imports: [
+    RouterModule.forRoot(routes),
     BrowserModule,
     NgbModule,
     CountryModule,
-    RouterModule.forRoot(routes)
+    DatetimePickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
