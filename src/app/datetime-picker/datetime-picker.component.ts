@@ -54,4 +54,29 @@ export class DatetimePickerComponent implements OnInit {
   ngOnInit() {
   }
 
+  // options: any = {
+  //   autoApply: false,
+  //   alwaysShowCalendars: false,
+  //   showCancel: false,
+  //   showClearButton: false,
+  //   linkedCalendars: true,
+  //   singleDatePicker: true,
+  // };
+  // minDate: moment.Moment = moment();
+  // locale: any = {
+  //   format: 'HH:mm - DD/MMMM/YYYY',
+  //   separator: ' To ',
+  //   cancelLabel: 'Cancel',
+  //   applyLabel: 'Okay',
+  // };
+  // opens: string;
+  // drops: string;
+  // timePicker: boolean;
+  // selected = { start: moment().subtract(3, 'days'), end: moment().add(3, 'days') };
+  // click() {
+  // }
+
+  // ngOnInit() {
+  // }
+
 }

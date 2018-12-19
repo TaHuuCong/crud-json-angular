@@ -1,6 +1,6 @@
 <div class="row">
   <!-- ng-zorro-antd package -->
-  <div class="col-md-4 ng-zorro-antd">
+  <!-- <div class="col-md-4 ng-zorro-antd">
     <nz-date-picker 
       nzFormat="yyyy-MM-dd HH:mm" 
       [nzDisabledDate]="disabledDate" 
@@ -8,13 +8,13 @@
       [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }" 
       nzPlaceHolder="Date - Time">
     </nz-date-picker>
-  </div>
+  </div> -->
 
   <!-- ngx-daterangepicker-material package -->
   <div class="col-md-4 ngx-daterangepicker-material">
     <label>
       Date - Time:
-      <input type="text" matInput
+      <input type="text" readonly
         [formControl]="dateMaterial" 
         ngxDaterangepickerMd
         [singleDatePicker]="true"
@@ -23,6 +23,7 @@
         [showClearButton]="true"
         [timePicker]="true"
         [timePicker24Hour]="true"
+        [showDropdowns]="true"
         [timePickerSeconds]="false"
         [timePickerIncrement]="1"
         [locale]="locale"
@@ -32,4 +33,19 @@
     <button (click)="setTime()" class="btn btn-primary">Click me</button>
     <p>Value: {{ value }}</p>
   </div>
+  <!-- <mat-card>
+  <input type="text" matInput [formControl]="dateMaterial"
+  ngxDaterangepickerMd
+  [autoApply]="options.autoApply"
+  [linkedCalendars]="options.linkedCalendars"
+  [singleDatePicker]="options.singleDatePicker"
+  applyLabel="Okay"
+  [locale]="locale"
+  [showDropdowns]="true"
+  [minDate]="minDate"
+  [showCancel]="options.showCancel"
+  [showClearButton]="options.showClearButton"
+  [timePicker]="timePicker"
+  name="daterange"/>
+</mat-card> -->
 </div>
