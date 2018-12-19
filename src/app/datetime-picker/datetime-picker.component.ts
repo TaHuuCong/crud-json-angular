@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import * as setHours from 'date-fns/set_hours';
+import { FormControl } from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-datetime-picker',
@@ -9,9 +11,26 @@ import * as setHours from 'date-fns/set_hours';
 })
 export class DatetimePickerComponent implements OnInit {
 
+  constructor() { }
+
+  // ngx-daterangepicker-material package
+  value: any;
+  dateMaterial = new FormControl('');
+  currentDate = moment();
+  locale = {
+    format: 'HH:mm - DD/MM/YYYY',
+    cancelLabel: 'Cancel', // detault is 'Cancel'
+    applyLabel: 'Okay', // detault is 'Apply'
+    firstDay: 1 // first day is monday
+  };
+
+  // ng-zorro-antd package
   today = new Date();
   timeDefaultValue = setHours(new Date(), 0);
-  placeHolder: 'Date-time';
+
+  setTime() {
+    this.value = this.dateMaterial.value.startDate.toISOString();
+  }
 
   range(start: number, end: number): number[] {
     const result = [];
@@ -20,12 +39,10 @@ export class DatetimePickerComponent implements OnInit {
     }
     return result;
   }
-
   disabledDate = (current: Date): boolean => {
     // Can not select days before today
     return differenceInCalendarDays(current, this.today) < 0;
   }
-
   disabledDateTime = (): object => {
     return {
       // nzDisabledHours  : () => this.range(0, 24).splice(4, 20),
@@ -33,8 +50,6 @@ export class DatetimePickerComponent implements OnInit {
       // nzDisabledSeconds: () => [ 55, 56 ]
     };
   }
-
-  constructor() { }
 
   ngOnInit() {
   }
