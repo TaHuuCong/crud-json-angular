@@ -86,7 +86,6 @@
         }
 
         font-size: 14px;
-        font-weight: 500;
       }
 
       td {
@@ -121,6 +120,11 @@
     select.monthselect,
     select.yearselect {
       font-size: 14px;
+    }
+
+    .calendar td,
+    .calendar th {
+      padding: 5px;
     }
   }
 }
