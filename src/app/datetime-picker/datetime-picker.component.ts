@@ -14,22 +14,51 @@ export class DatetimePickerComponent implements OnInit {
   constructor() { }
 
   // ngx-daterangepicker-material package
-  value: any;
-  dateMaterial = new FormControl('');
+  localUTC: any;
+  singaporeUTC: any;
+  today = new Date();
+  control = new FormControl('');
   currentDate = moment();
   locale = {
     format: 'HH:mm - DD/MM/YYYY',
     cancelLabel: 'Cancel', // detault is 'Cancel'
-    applyLabel: 'Okay', // detault is 'Apply'
+    applyLabel: 'Apply', // detault is 'Apply'
     firstDay: 1 // first day is monday
   };
 
+  list = [];
+
   // ng-zorro-antd package
-  today = new Date();
-  timeDefaultValue = setHours(new Date(), 0);
+  // timeDefaultValue = setHours(new Date(), 0);
+
+
+  // convert local time to another timezone (utc time = GMT+0)
+    // local time format: Sat Dec 22 2018 13:00:00 GMT+0700 (Giờ Đông Dương)
+    // utc time format: 2018-12-26T18:00:00.000Z
+    // GMT+0700 --> zone = '+7.00'
+  localToUTC(date, zone) {
+    const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
+    const nd = new Date(utc + (zone * 3600000));
+    return nd.toISOString(); // convert to utc
+  }
+
+  // convert a utc time to local time (with format)
+  utcToLocal(utcTime, format) {
+    const d = new Date(utcTime);      // convert to local
+    return moment(d).format(format);  // format local
+  }
 
   setTime() {
-    this.value = this.dateMaterial.value.startDate.toISOString();
+    const val = this.control.value.startDate;
+    const c = moment(val).format('HH:mm - DD/MM/YYYY');
+    this.localUTC = c + ' = ' + val.toISOString();
+    const x = this.localToUTC(val._d, '+8');
+    this.singaporeUTC = this.utcToLocal(x, 'HH:mm - DD/MM/YYYY');
+    this.list.push(
+      {
+        'time': x
+      }
+    );
   }
 
   range(start: number, end: number): number[] {

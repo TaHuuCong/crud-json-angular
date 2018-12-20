@@ -16,29 +16,23 @@ import {
     MatInputModule,
     MatSelectModule
 } from '@angular/material';
+import { LibModule } from '../lib.module';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { FormatUtcTime } from './date.pipe';
 
 @NgModule({
     declarations: [
-        DatetimePickerComponent
+        DatetimePickerComponent,
+        FormatUtcTime
     ],
     imports: [
         RouterModule.forChild([
             { path: 'datetime-picker', component: DatetimePickerComponent }
         ]),
-        // LibModule,
         // NgZorroAntdModule,
         BrowserModule,
         NoopAnimationsModule,
-        ReactiveFormsModule, FormsModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatToolbarModule,
-        MatCardModule,
-        MatGridListModule,
-        MatInputModule,
-        MatSelectModule,
-        NgxDaterangepickerMd
+        LibModule,
     ],
     // providers: [
     //     { provide: NZ_I18N, useValue: en_US }

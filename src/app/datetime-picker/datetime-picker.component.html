@@ -15,7 +15,8 @@
     <label>
       Date - Time:
       <input type="text" readonly
-        [formControl]="dateMaterial" 
+        class="form-control"
+        [formControl]="control" 
         ngxDaterangepickerMd
         [singleDatePicker]="true"
         [linkedCalendars]="true"
@@ -31,8 +32,15 @@
       >
     </label>
     <button (click)="setTime()" class="btn btn-primary">Click me</button>
-    <p>Value: {{ value }}</p>
+    <p>Local Time: {{ localUTC }}</p>
   </div>
+
+  <p>Singapore Time (GMT+8):</p>
+  <ul>
+    <li *ngFor="let item of list">
+      <span>{{item.time | formatUtc}}</span>
+    </li>
+  </ul>
   <!-- <mat-card>
   <input type="text" matInput [formControl]="dateMaterial"
   ngxDaterangepickerMd
