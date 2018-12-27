@@ -1,6 +1,5 @@
-<div class="row">
-  <!-- ng-zorro-antd package -->
-  <!-- <div class="col-md-4 ng-zorro-antd">
+<!-- ng-zorro-antd package -->
+<!-- <div class="ng-zorro-antd">
     <nz-date-picker 
       nzFormat="yyyy-MM-dd HH:mm" 
       [nzDisabledDate]="disabledDate" 
@@ -10,50 +9,43 @@
     </nz-date-picker>
   </div> -->
 
-  <!-- ngx-daterangepicker-material package -->
-  <div class="col-md-4 ngx-daterangepicker-material">
-    <label>
+<!-- ngx-daterangepicker-material package -->
+<div class="ngx-daterangepicker-material">
+  <form name="form" #f="ngForm" novalidate>
+    <input type="text" class="form-control" name="name" required
+    [(ngModel)]="test.name" #name="ngModel">
+    <label for="datepicker">
       Date - Time:
-      <input type="text" readonly
-        class="form-control"
-        [formControl]="control" 
-        ngxDaterangepickerMd
-        [singleDatePicker]="true"
-        [linkedCalendars]="true"
-        [showCancel]="true"
-        [showClearButton]="true"
-        [timePicker]="true"
-        [timePicker24Hour]="true"
-        [showDropdowns]="true"
-        [timePickerSeconds]="false"
-        [timePickerIncrement]="1"
-        [locale]="locale"
-        [minDate]="currentDate"
-      >
     </label>
-    <button (click)="setTime()" class="btn btn-primary">Click me</button>
-    <p>Local Time: {{ localUTC }}</p>
-  </div>
+    <input type="text" name="datepicker" readonly class="form-control" 
+      ngxDaterangepickerMd
+      [singleDatePicker]="true"
+      [linkedCalendars]="true" 
+      [showCancel]="true" 
+      [showClearButton]="true" 
+      [timePicker]="true"
+      [timePicker24Hour]="true" 
+      [showDropdowns]="true" 
+      [timePickerSeconds]="false" 
+      [timePickerIncrement]="1" 
+      [locale]="locale"
+      [(ngModel)]="test.datepicker"
+      (change)="change($event)">
+    <div *ngIf="isErr">Error</div>
+    <button *ngIf="f.form.valid && isErr === false" (click)="save(f.form.value)" class="btn btn-primary">Save</button>
+    <button *ngIf="!f.form.valid || isErr === true" class="btn btn-primary">Save</button>
+  </form>
+  <p>Form: {{ f.form.valid | json }}</p>
+</div>
 
+<!-- <div>
   <p>Singapore Time (GMT+8):</p>
   <ul>
     <li *ngFor="let item of list">
       <span>{{item.time | formatUtc}}</span>
     </li>
   </ul>
-  <!-- <mat-card>
-  <input type="text" matInput [formControl]="dateMaterial"
-  ngxDaterangepickerMd
-  [autoApply]="options.autoApply"
-  [linkedCalendars]="options.linkedCalendars"
-  [singleDatePicker]="options.singleDatePicker"
-  applyLabel="Okay"
-  [locale]="locale"
-  [showDropdowns]="true"
-  [minDate]="minDate"
-  [showCancel]="options.showCancel"
-  [showClearButton]="options.showClearButton"
-  [timePicker]="timePicker"
-  name="daterange"/>
-</mat-card> -->
 </div>
+
+<div>Time zone: {{timezone}}</div>
+<div>Moment: {{this.moment}}</div> -->

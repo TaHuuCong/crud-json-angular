@@ -6,24 +6,14 @@ import { DatetimePickerComponent } from './datetime-picker.component';
 // import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-    MatButtonModule,
-    MatCheckboxModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatGridListModule,
-    MatInputModule,
-    MatSelectModule
-} from '@angular/material';
 import { LibModule } from '../lib.module';
-import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormatUtcTime } from './date.pipe';
+import { DateTimeService } from './datetime.service';
 
 @NgModule({
     declarations: [
         DatetimePickerComponent,
-        FormatUtcTime
+        FormatUtcTime,
     ],
     imports: [
         RouterModule.forChild([
@@ -34,8 +24,9 @@ import { FormatUtcTime } from './date.pipe';
         NoopAnimationsModule,
         LibModule,
     ],
-    // providers: [
-    //     { provide: NZ_I18N, useValue: en_US }
-    // ],
+    providers: [
+        DateTimeService,
+        // { provide: NZ_I18N, useValue: en_US }
+    ],
 })
 export class DatetimePickerModule { }
