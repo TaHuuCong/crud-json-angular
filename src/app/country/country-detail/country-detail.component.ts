@@ -20,27 +20,30 @@ export class CountryDetailComponent implements OnInit {
   countries: any;
   isSuccess = false;
   successMsg = 'New country has been added.';
+  initEditor = {
+    theme: 'modern',
+    plugins: [
+      'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+      'searchreplace wordcount visualblocks visualchars code fullscreen',
+      'insertdatetime media nonbreaking save table contextmenu directionality',
+      'emoticons template paste textcolor colorpicker textpattern imagetools'
+    ],
+    toolbar1: `insertfile undo redo | styleselect | bold italic |
+    alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image`,
+    toolbar2: `print preview media | forecolor backcolor emoticons`,
+    branding: false,
+    height: 250
+  };
 
   constructor(
     private route: ActivatedRoute,
     private countryService: CountryService,
     private fb: FormBuilder,
     private router: Router
-  ) { }
-
-  formInit() {
-    this.countryForm = this.fb.group({
-      id: [],
-      // name: ['', [Validators.required]],
-      name: ['', [Validators.required], this.uniqueNameValidator.bind(this)],
-      acreage: ['', [Validators.required]],
-      population: ['', [Validators.required]],
-      continent: ['', [Validators.required]]
+  ) {
+    this.route.params.subscribe(params => {
+      this.operation = params['operation'];
     });
-  }
-
-  ngOnInit() {
-    this.operation = this.route.snapshot.params['operation'];
 
     if (this.operation === 'create') {
       this.formInit();
@@ -54,6 +57,21 @@ export class CountryDetailComponent implements OnInit {
         }
       );
     }
+  }
+
+  formInit() {
+    this.countryForm = this.fb.group({
+      id: [],
+      name: ['', [Validators.required]],
+      // name: ['', [Validators.required], this.uniqueNameValidator.bind(this)],
+      acreage: ['', [Validators.required]],
+      population: ['', [Validators.required]],
+      continent: ['', [Validators.required]],
+      describe: [''],
+    });
+  }
+
+  ngOnInit() {
   }
 
   onBack() {
@@ -109,5 +127,36 @@ export class CountryDetailComponent implements OnInit {
       })
     );
   }
+
+  handleEvent(e) {
+    console.log(e);
+  }
+
+  // onload = function () {
+  //   tinymce.init({
+  //     selector: 'textarea',
+  //     width: 400,
+  //     setup: function (ed) {
+  //       ed.on('keyup', function (e) {
+  //         const count = this.countCharacters();
+  //       });
+  //     }
+  //   });
+  // };
+  // countCharacters() {
+  //   const body = tinymce.get('txtTinyMCE').getBody();
+  //   const content = tinymce.trim(body.innerText || body.textContent);
+  //   return content.length;
+  // }
+
+  // validateCharacterLength() {
+  //   const max = 20;
+  //   const count = this.countCharacters();
+  //   if (count > max) {
+  //     alert('Maximum ' + max + ' characters allowed.');
+  //     return false;
+  //   }
+  //   return;
+  // }
 
 }

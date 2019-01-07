@@ -10,6 +10,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 const MODULES = [
     CommonModule,
@@ -26,6 +27,7 @@ const MODULES = [
     MatCheckboxModule,
     MatToolbarModule,
     NgxDaterangepickerMd,
+    EditorModule
 ];
 
 @NgModule({

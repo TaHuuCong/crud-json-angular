@@ -25,7 +25,7 @@ const routes: Routes = [
     BrowserModule,
     NgbModule,
     CountryModule,
-    DatetimePickerModule
+    DatetimePickerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

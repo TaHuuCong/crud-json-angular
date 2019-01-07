@@ -17,9 +17,9 @@
             <mat-error *ngIf="countryForm.get('name').hasError('required') && (countryForm.get('name').touched || myform.submitted)">
               Country name is required.
             </mat-error>
-            <mat-error *ngIf="countryForm.get('name').hasError('uniqueName') && (countryForm.get('name').touched || myform.submitted)">
+            <!-- <mat-error *ngIf="countryForm.get('name').hasError('uniqueName') && (countryForm.get('name').touched || myform.submitted)">
               Country name already exists.
-            </mat-error>
+            </mat-error> -->
           </mat-form-field>
         </div>
         <div class="form-group">
@@ -49,6 +49,12 @@
               Continent is required.
             </mat-error>
           </mat-form-field>
+        </div>
+        <div class="form-group">
+          <div class="w-100">
+            <editor formControlName="describe" [init]="initEditor" [disabled]="operation === 'details'"
+            (onKeyDown) = "handleEvent($event)" ></editor>
+          </div>
         </div>
         <div class="button" *ngIf="operation === 'details'">
           <button class="edit" mat-raised-button color="warn" (click)="onDelete(country.id)">Delete</button>
