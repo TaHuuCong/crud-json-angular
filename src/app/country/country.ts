@@ -4,4 +4,5 @@ export interface Country {
     acreage: number;
     population: number;
     continent: string;
+    describe: string;
 }

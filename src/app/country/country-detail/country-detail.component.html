@@ -53,15 +53,22 @@
         <div class="form-group">
           <div class="w-100">
             <editor formControlName="describe" [init]="initEditor" [disabled]="operation === 'details'"
-            (onKeyDown) = "handleEvent($event)" ></editor>
+            (onEditorContentChange)="handleEditor($event)"
+            [ngClass]="{'has-error': errorEMax || errorEMin, 'view': operation === 'details'}">
+            </editor>
+            <mat-error *ngIf="errorEMax">
+              Max is 5.
+            </mat-error>
+            <mat-error *ngIf="errorEMin">
+              Describe is required.
+            </mat-error>
           </div>
         </div>
         <div class="button" *ngIf="operation === 'details'">
-          <button class="edit" mat-raised-button color="warn" (click)="onDelete(country.id)">Delete</button>
-          <button class="edit" mat-raised-button color="primary" (click)="onEdit(country.id)">Edit</button>
+          <!-- <button class="edit" mat-raised-button color="warn" (click)="onDelete()">Delete</button> -->
+          <button class="edit" mat-raised-button color="primary" (click)="onEdit()">Edit</button>
         </div>
         <div class="button" *ngIf="operation === 'edit'">
-          <!-- <button class="reset" mat-raised-button color="accent" (click)="onReset()">Reset</button> -->
           <button class="save" mat-raised-button color="accent" (click)="onUpdate()">Save</button>
         </div>
         <div class="button" *ngIf="operation === 'create'">

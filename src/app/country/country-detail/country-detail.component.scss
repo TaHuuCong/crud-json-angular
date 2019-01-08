@@ -51,3 +51,35 @@
   }
 
 }
+
+:host ::ng-deep {
+  .mce-statusbar {
+    &.mce-container {
+      border: none;
+    }
+
+    .mce-container-body {
+      display: none;
+    }
+  }
+
+  .mce-tinymce {
+    box-shadow: none;
+  }
+
+  .mce-edit-area.mce-container.mce-panel {
+    border: none;
+  }
+
+  .has-error {
+    .mce-tinymce.mce-container.mce-panel {
+      border: 1px solid #f64b63;
+    }
+  }
+
+  .view {
+    .mce-stack-layout-item.mce-first .mce-container-body{
+      display: none;
+    }
+  }
+}

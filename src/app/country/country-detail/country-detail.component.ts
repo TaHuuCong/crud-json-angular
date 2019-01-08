@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CountryService } from '../country.service';
 import { Country } from '../country';
@@ -12,27 +12,55 @@ import { map } from 'rxjs/operators';
 })
 export class CountryDetailComponent implements OnInit {
 
+  // tslint:disable-next-line:no-output-on-prefix
+  @Output() onEditorContentChange = new EventEmitter();
+
   country: Country;
   operation: string;
+  id: string;
   countryForm: FormGroup;
   continents = ['Asia', 'America', 'Europe', 'Australia', 'Africa'];
   submitted = false;
   countries: any;
   isSuccess = false;
   successMsg = 'New country has been added.';
+
+  // editor
+  editor;
+  isChange = false;
+  editorContent = '';
+  editorLength = 0;
+  errorEMax = false;
+  errorEMin = false;
   initEditor = {
     theme: 'modern',
     plugins: [
-      'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-      'searchreplace wordcount visualblocks visualchars code fullscreen',
-      'insertdatetime media nonbreaking save table contextmenu directionality',
-      'emoticons template paste textcolor colorpicker textpattern imagetools'
+      'advlist autolink lists link image charmap preview hr',
+      'searchreplace',
+      'media save contextmenu directionality',
+      'paste textcolor colorpicker textpattern imagetools'
     ],
-    toolbar1: `insertfile undo redo | styleselect | bold italic |
-    alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image`,
-    toolbar2: `print preview media | forecolor backcolor emoticons`,
+    toolbar1: `insertfile undo redo | styleselect | bold italic underline forecolor backcolor |
+    | alignleft aligncenter alignright alignjustify | bullist numlist | link image media`,
+    // toolbar2: 'print preview code ',
     branding: false,
-    height: 250
+    visual: false,
+    height: 250,
+    setup: editor => {
+      this.editor = editor;
+      editor.on('keyup change', () => {
+        const length = editor.getBody().textContent.length;
+        const lengthTrim = editor.getBody().textContent.trim().length;
+        this.onEditorContentChange.emit(length);
+        this.errorEMax = (lengthTrim > 3000) ? true : false;
+        this.errorEMin = (length === 0) ? true : false;
+
+        const childNode = editor.getBody().childNodes[0];
+        const nodeName = childNode.tagName.toLowerCase();
+        const nodeHTML = childNode.innerHTML.replace(/^[\s(&nbsp;)]+/g, '').replace(/[\s(&nbsp;)]+$/g, '');
+        this.editorContent = `<` + nodeName + `>` + nodeHTML + `</` + nodeName + `>`;
+      });
+    }
   };
 
   constructor(
@@ -43,20 +71,24 @@ export class CountryDetailComponent implements OnInit {
   ) {
     this.route.params.subscribe(params => {
       this.operation = params['operation'];
-    });
+      this.id = params['id'];
 
-    if (this.operation === 'create') {
-      this.formInit();
-    } else {
-      this.formInit();
-
-      this.countryService.getCountryById(this.route.snapshot.params['id']).subscribe(
-        data => {
-          this.country = data;
-          this.countryForm.patchValue(data);
+      if (this.operation === 'create') {
+        this.formInit();
+      } else {
+        this.formInit();
+        if (this.id === '-1') {
+        } else {
+          this.countryService.getCountryById(this.id).subscribe(
+              data => {
+                  this.editorContent = data.describe;
+                  this.countryForm.patchValue(data);
+              },
+              error => {}
+          );
         }
-      );
-    }
+      }
+    });
   }
 
   formInit() {
@@ -78,27 +110,30 @@ export class CountryDetailComponent implements OnInit {
     this.router.navigateByUrl('/country/list');
   }
 
-  onEdit(id) {
-    this.operation = 'edit';
-    this.router.navigateByUrl('/country/' + id + '/edit');
+  onEdit() {
+    this.router.navigateByUrl('/country/' + this.id + '/edit');
   }
 
-  onDelete(id) {
-    if (confirm('Are you sure you want to delete this country?')) {
-      this.countryService.deleteCountry(id).subscribe(
-        data => {
-          this.router.navigateByUrl('/country/list');
-        },
-      );
-    }
-  }
+  // onDelete() {
+  //   if (confirm('Are you sure you want to delete this country?')) {
+  //     this.countryService.deleteCountry(this.id).subscribe(
+  //       data => {
+  //         this.router.navigateByUrl('/country/list');
+  //       },
+  //     );
+  //   }
+  // }
 
   onUpdate() {
     this.submitted = true;
-    if (this.countryForm.valid) {
+    if (this.countryForm.value.describe === '') {
+      this.errorEMin = true;
+    }
+    if (this.errorEMin === false && this.countryForm.valid) {
+      this.countryForm.value.describe = this.editorContent;
       this.countryService.updateCountry(this.countryForm.value).subscribe(
         data => {
-          this.router.navigateByUrl('/country/list');
+          this.router.navigateByUrl('/country/' + data.id + '/details');
         },
       );
     }
@@ -106,11 +141,15 @@ export class CountryDetailComponent implements OnInit {
 
   onCreate() {
     this.submitted = true;
-    if (this.countryForm.valid) {
+    if (this.countryForm.value.describe === '') {
+      this.errorEMin = true;
+    }
+    if (this.errorEMin === false && this.countryForm.valid) {
+      this.countryForm.value.describe = this.editorContent;
       this.countryService.addNewCountry(this.countryForm.value).subscribe(
         data => {
           this.isSuccess = true;
-          this.router.navigateByUrl('/country/list');
+          this.router.navigateByUrl('/country/' + data.id + '/details');
         },
       );
     }
@@ -128,35 +167,10 @@ export class CountryDetailComponent implements OnInit {
     );
   }
 
-  handleEvent(e) {
-    console.log(e);
+  handleEditor(event) {
+    // const childNode = event.editor.getBody().childNodes[0];
+    // const nodeName = childNode.tagName.toLowerCase();
+    // const nodeHTML = childNode.innerHTML.replace(/^[\s(&nbsp;)]+/g, '').replace(/[\s(&nbsp;)]+$/g, '');
+    // this.editorContent = `<` + nodeName + `>` + nodeHTML + `</` + nodeName + `>`;
   }
-
-  // onload = function () {
-  //   tinymce.init({
-  //     selector: 'textarea',
-  //     width: 400,
-  //     setup: function (ed) {
-  //       ed.on('keyup', function (e) {
-  //         const count = this.countCharacters();
-  //       });
-  //     }
-  //   });
-  // };
-  // countCharacters() {
-  //   const body = tinymce.get('txtTinyMCE').getBody();
-  //   const content = tinymce.trim(body.innerText || body.textContent);
-  //   return content.length;
-  // }
-
-  // validateCharacterLength() {
-  //   const max = 20;
-  //   const count = this.countCharacters();
-  //   if (count > max) {
-  //     alert('Maximum ' + max + ' characters allowed.');
-  //     return false;
-  //   }
-  //   return;
-  // }
-
 }
