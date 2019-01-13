@@ -1,0 +1,37 @@
+<div class="row m-0">
+  <div class="col-md-8 col-lg-7 mx-auto">
+    <div class="editor-list">
+      <h1>Annoncement List</h1>
+      <div class="d-flex flex-column align-items-start mx-auto">
+        <button class="add" mat-raised-button color="primary" (click)="onCreate()">Add New Annoncement</button>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <!-- <th>Content</th> -->
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let editor of editors" (click)="viewEditor(editor.id)">
+                <td>{{ editor.id }}</td>
+                <td>{{ editor.title }}</td>
+                <!-- <td>{{ editor.content }}</td> -->
+                <td class="action">
+                  <a class="edit" (click)="onEdit($event, editor.id)">
+                    <fa name="edit"></fa>
+                  </a>
+                  <a class="delete" (click)="onDelete($event, editor.id)">
+                    <fa name="trash"></fa>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

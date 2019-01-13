@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+  <div class="col col-md-6">
+    <div class="editor-detail">
+      <div class="title d-flex align-items-center justify-content-center">
+        <a (click)="back()">
+          <img src="/assets/images/back-icon.png" alt="">
+        </a>
+        <h1>Announcement</h1>
+      </div>
+      <form #myform="ngForm" class="form" role="form" novalidate>
+        <div class="form-group view-title" *ngIf="operation === 'view'">
+          <div class="form-control-label">Title</div>
+          <div>{{announcementForm.title}}</div>
+        </div>
+        <div *ngIf="operation !== 'view'" class="form-group">
+          <mat-form-field class="w-100">
+            <input type="text" matInput placeholder="Title" class="form-control" id="title" name="title" [(ngModel)]="announcementForm.title"
+              required #title="ngModel">
+            <mat-error *ngIf="title?.errors?.required && (title.touched || title.dirty || myform.submitted)">
+              Title is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div *ngIf="operation !== 'view'" class="form-group editor">
+          <div class="w-100">
+            <editor class="editor-control" name="content" [(ngModel)]="announcementForm.content" #content="ngModel"
+              [init]="initEditor" [ngClass]="{'view': operation === 'view'}" (onEditorContentChange)="handleEditor($event)"></editor>
+            <mat-error *ngIf="errorEMax">
+              Content has maximum 20 characters
+            </mat-error>
+            <mat-error *ngIf="errorEMin">
+              Content is required.
+            </mat-error>
+          </div>
+        </div>
+        <div *ngIf="operation === 'view'" class="form-group">
+          <label class="form-control-label">Content</label>
+          <div [innerHTML]="viewEditor" class="view-content"></div>
+        </div>
+        <div class="button" *ngIf="operation === 'view'">
+          <button class="edit" mat-raised-button color="primary" (click)="goEdit()">Edit</button>
+        </div>
+        <div class="button" *ngIf="operation === 'edit'">
+          <button class="save" mat-raised-button color="accent" (click)="onSave('edit', myform)">Save</button>
+        </div>
+        <div class="button" *ngIf="create === 'create'">
+          <button class="create" mat-raised-button color="accent" (click)="onSave('create', myform)">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

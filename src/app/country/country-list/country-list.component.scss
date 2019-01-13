@@ -84,6 +84,10 @@ table {
         color: red;
       }
 
+      &.info {
+        color: blue;
+      }
+
       &::before {
         content: '';
         display: block;
@@ -126,9 +130,12 @@ table {
       width: 190px;
     }
 
-    &:nth-child(5),
+    &:nth-child(5) {
+      width: 140px;
+    }
+
     &:nth-child(6) {
-      width: 150px;
+      width: 160px;
     }
 
     &:nth-child(5) {
