@@ -37,23 +37,22 @@ export class EditorDetailComponent implements OnInit {
     paste_as_text: false,
     menu: {
       file: { title: 'File', items: 'newdocument | print' },
-      edit: { title: 'Edit', items: 'undo redo | cut copy paste | selectall | searchreplace' },
+      edit: { title: 'Edit', items: 'undo redo | selectall | searchreplace' },
       view: { title: 'View', items: 'visualaid' },
       insert: { title: 'Insert', items: 'image link media | charmap' },
       format: { title: 'Format', items: 'bold italic underline strikethrough superscript subscript | removeformat' },
       table: { title: 'Table', items: 'inserttable deletetable | cell row column' }
     },
     plugins: [
-      `advlist autolink lists link paste image table charmap searchreplace print
+      `advlist autolink lists link image table charmap searchreplace print
                code media textcolor colorpicker textpattern imagetools autoresize`
     ],
-    toolbar1: `insertfile undo redo | formatselect | bold italic underline forecolor backcolor |
-               | fontselect | fontsizeselect`,
-    toolbar2: `alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media mypreview code`,
+    toolbar1: `insertfile undo redo | formatselect | bold italic underline forecolor backcolor | fontsizeselect`,
+    toolbar2: `alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media code | previewmenu`,
     fontsize_formats: '9px 10px 12px 13px 14px 16px 18px 24px 36px',
-    font_formats: `Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Courier New=courier new,courier;
-                   Georgia=georgia,palatino;Helvetica=helvetica;Tahoma=tahoma,arial,helvetica,sans-serif;Verdana=verdana,geneva;
-                   Roboto=roboto,sans-serif`,
+    // font_formats: `Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Courier New=courier new,courier;
+    //                Georgia=georgia,palatino;Helvetica=helvetica;Tahoma=tahoma,arial,helvetica,sans-serif;Verdana=verdana,geneva;
+    //                Roboto=roboto,sans-serif`,
     branding: false,
     link_context_toolbar: true,
     remove_linebreaks: false,
@@ -64,79 +63,131 @@ export class EditorDetailComponent implements OnInit {
     autoresize_max_height: 500,
     setup: editor => {
       editor.on('keyup change', () => {
-        const obj = editor.getBody().childNodes;
-        if (obj.length > 1) {
-          let str = '';
-          for (let i = 0; i < obj.length; i++) {
-            if (true) {
-              const name = obj[i].localName;
-              const content = obj[i].innerHTML;
-              str += `<` + name + `>` + content + `<` + name + `/>`;
-              this.emptyContent =
-                this.emptyContent && (content === '<br data-mce-bogus="1">' || content === '');
-            }
-          }
-          this.editorContent = str;
-        } else {
-          if (obj[0].innerHTML !== '<br>' && obj[0].innerHTML !== '<br data-mce-bogus="1">') {
-            this.emptyContent = false;
+          let maxLength = 0;
+          const obj = editor.getBody().childNodes;
+          if (obj.length > 1) {
+              // let str = '';
+              for (let i = 0; i < obj.length; i++) {
+                  if (true) {
+                      const x = obj[i];
+                      // const name = obj[i].localName;
+                      const content = obj[i].innerHTML;
+                      if (content.includes('data-mce-object="iframe"')) {
+                          obj[i].className = 'iframe-wrapper';
+                      }
+                      if (content === '<br data-mce-bogus="1">') {
+                          obj[i].className = '';
+                      }
+                      // str += `<` + name + `>` + content + `<` + name + `/>`;
+                      const lengthE = obj[i].innerText.replace(/\uFEFF/g, '').length;
+                      maxLength += lengthE;
+                      this.emptyContent = this.emptyContent && (content === '<br data-mce-bogus="1">' || content === '');
+                  }
+              }
+              // this.editorContent = str;
           } else {
-            this.emptyContent = true;
+              if (obj[0].innerHTML !== '<br>' && obj[0].innerHTML !== '<br data-mce-bogus="1">') {
+                  this.emptyContent = false;
+              } else {
+                  this.emptyContent = true;
+              }
+              maxLength = obj[0].innerText.replace(/\uFEFF/g, '').length;
           }
-        }
-        const length = editor.getBody().textContent.replace(/\uFEFF/g, '').length;
-        if (length === 0) {
-          if (this.emptyContent) {
-            this.errorEMin = true;
+          const length = editor.getBody().textContent.replace(/\uFEFF/g, '').length;
+          if (length === 0) {
+              if (this.emptyContent) {
+                  this.errorEMin = true;
+              } else {
+                  this.errorEMin = false;
+              }
           } else {
-            this.errorEMin = false;
+              this.errorEMin = false;
           }
-        } else {
-          this.errorEMin = false;
-        }
-        const lengthTrim = editor.getBody().textContent.replace(/\uFEFF/g, '').replace(/[\s(&nbsp;)]+$/g, '').length;
-        this.errorEMax = lengthTrim > 100 ? true : false;
-        this.onEditorContentChange.emit(length);
+          this.errorEMax = maxLength > 3000 ? true : false;
+          this.onEditorContentChange.emit(length);
       });
 
-      const t = editor.settings;
-      editor.addButton('mypreview', {
-        icon: 'preview',
-        onClick: function () {
-          editor.windowManager.open({
-            title: 'Preview',
-            width: 700,
-            height: 500,
-            html: `<iframe src="javascript:\'\'" frameborder="0"' + '
-            sandbox="allow-scripts allow-same-origin allow-presentation"' + '></iframe>`,
+      function preview(width1: number, height1: number, device: string) {
+          return {
+            title: 'Preview on ' + device,
+            width: width1,
+            height: height1,
+            html: `<iframe src="javascript:\'\'" frameborder="0"
+            sandbox="allow-scripts allow-same-origin allow-presentation"` + `></iframe>`,
             buttons: {
-              text: 'Close',
-              onclick: function () {
-                this.parent().parent().close();
-              }
+                text: 'Close',
+                onclick() {
+                    this.parent().parent().close();
+                }
             },
-            onPostRender: function () {
-              const url = 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.10/skins/lightgray/content.min.css';
-              const h = '<base href="' + editor.documentBaseURI.getURI() + '"><link type="text/css" rel="stylesheet" href="" ' + url + '>';
-              const s = `<script>
-                            document.addEventListener
-                            && document.addEventListener("click", function(e) {
-                              for (let elm = e.target; elm; elm = elm.parentNode) {
-                                if (elm.nodeName === "A") {
-                                  e.preventDefault();
-                                }
-                              }
-                            }, false);
-                         </script> `;
-              const r = '<!DOCTYPE html><html><head>' + h + '</head><body id="tinymce" class="mce-content-body ">'
-                        + editor.getContent() + s + '</body></html>';
-              const c = this.getEl('body').firstChild.contentWindow.document;
-              c.open(), c.write(r), c.close();
-            }
-          });
-        }
+            onPostRender() {
+                const url = 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.10/skins/lightgray/content.min.css';
+                const h = '<base href="' + editor.documentBaseURI.getURI() + '"><link type="text/css" rel="stylesheet" href="' + url + '">';
+                const style =  `<style>
+                                    img {
+                                        max-width: 100%;
+                                        height: auto;
+                                    }
+
+                                    .iframe-wrapper {
+                                        position: relative;
+                                        overflow: hidden;
+                                        padding-top: 56.25%;
+                                    }
+                                    .iframe-wrapper iframe {
+                                        position: absolute;
+                                        max-width: 100%;
+                                        height: 100%;
+                                        border: 0;
+                                        left: 0;
+                                        top: 0;
+                                    }
+                                </style>`;
+                const s = `<script>
+                                document.addEventListener
+                                && document.addEventListener("click", function(e) {
+                                    for (let elm = e.target; elm; elm = elm.parentNode) {
+                                        if (elm.nodeName === "A") {
+                                            e.preventDefault();
+                                        }
+                                    }
+                                }, false);
+                            </script>`;
+                const r = '<!DOCTYPE html><html><head>' + h + style + '</head><body id="tinymce" class="mce-content-body ">'
+                    + editor.getContent() + s + '</body></html>';
+                this.getEl('body').firstChild.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(r);
+                const c = this.getEl('body').firstChild.contentWindow.document;
+                c.open(), c.write(r), c.close();
+              }
+          };
+      }
+
+      editor.addButton('previewmenu', {
+          type: 'menubutton',
+          text: 'Preview',
+          icon: false,
+          menu: [
+              {
+                  text: 'on iPhone 6/7/8',
+                  onClick() {
+                      editor.windowManager.open(preview(375, 500, 'iPhone 6/7/8'));
+                  }
+              },
+              {
+                  text: 'on iPhone 6/7/8 Plus',
+                  onClick() {
+                      editor.windowManager.open(preview(414, 500, 'iPhone 6/7/8 Plus'));
+                  }
+              },
+              {
+                  text: 'on iPad',
+                  onClick() {
+                      editor.windowManager.open(preview(768, 500, 'iPad'));
+                  }
+              }
+          ]
       });
-    },
+    }
   };
 
   constructor(
@@ -184,7 +235,7 @@ export class EditorDetailComponent implements OnInit {
     if (this.emptyContent) {
       this.errorEMin = true;
     }
-    if (this.errorEMin === false && form.valid) {
+    if (this.errorEMin === false && this.errorEMax === false && form.valid) {
       const title = this.announcementForm.title;
       const content = this.announcementForm.content;
       if (title) {
