@@ -9,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DatetimePickerModule } from './datetime-picker/datetime-picker.module';
 import { MyEditorModule } from './editor/editor.module';
 import { MyFormModule } from './form/form.module';
+import { ChartModule } from './chart/chart.module';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,7 +28,8 @@ const routes: Routes = [
     DatetimePickerModule,
     CountryModule,
     MyEditorModule,
-    MyFormModule
+    MyFormModule,
+    ChartModule
   ],
   providers: [],
   bootstrap: [AppComponent],
